@@ -1,0 +1,97 @@
+:root {
+    --black: rgb(10, 10, 10);
+    --light-black: rgb(24, 24, 24);
+    --green: rgb(74, 246, 38);
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    font-size: 10px;
+}
+
+body {
+    color: var(--green);
+    background-color: var(--black);
+}
+
+#content {
+    display: flex;
+    height: 100vh;
+}
+
+#sidebar {
+    border-right: .2rem dashed var(--green);
+    display: flex;
+    flex-grow: 1;
+    padding: 2rem;
+    flex-direction: column;
+}
+
+#main {
+    display: flex;
+    flex-grow: 10;
+    background-color: var(--black);
+    color: var(--green);
+    justify-content: center;
+}
+
+#title {
+    font-size: 3rem;
+    text-align: center;
+}
+
+#sections {
+    font-size: 2rem;
+    margin: 5rem 0;
+}
+
+.section {
+    cursor: pointer;
+    margin: 1rem 0;
+    padding: 1rem;
+}
+
+.section:hover {
+    background-color: var(--light-black);
+    transition: .3s ease-in;
+}
+
+#new-todo {
+    position: relative;
+    margin: 10rem 0;
+    width: 50rem;
+}
+
+#new-todo span {
+    user-select: none;
+    position: absolute;
+    font-size: 2.5rem;
+    margin: 1.5rem;
+}
+
+#todo-txt {
+    font-size: 2.5rem;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: var(--green);
+    background-color: var(--light-black);
+    padding: 1.5rem 4rem;
+}
+
+::placeholder {
+    color: var(--green);
+    font-style: italic;
+    opacity: .5;
+}
+
+#add-todo {
+    cursor: pointer;
+    right: 0;
+}
