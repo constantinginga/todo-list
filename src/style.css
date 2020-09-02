@@ -1,5 +1,4 @@
 :root {
-    --black: rgb(10, 10, 10);
     --light-black: rgb(24, 24, 24);
     --green: rgb(74, 246, 38);
 }
@@ -16,8 +15,10 @@ body {
 }
 
 body {
-    color: var(--green);
-    background-color: var(--black);
+    font-family: 'Inconsolata', monospace;
+    background-color: #000;
+    background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
+    height: 100vh;
 }
 
 #content {
@@ -36,7 +37,6 @@ body {
 #main {
     display: flex;
     flex-grow: 10;
-    background-color: var(--black);
     color: var(--green);
     justify-content: center;
 }
@@ -65,7 +65,7 @@ body {
 #new-todo {
     position: relative;
     margin: 10rem 0;
-    width: 50rem;
+    width: 60rem;
 }
 
 #new-todo span {
