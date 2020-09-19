@@ -54,7 +54,8 @@ body::before {
     font-size: 2rem;
     display: flex;
     flex-grow: 10;
-    margin: 4rem;
+    margin: 2rem 4rem;
+    flex-direction: column;
 }
 
 #title {
@@ -74,43 +75,50 @@ body::before {
 }
 
 #instructions {
-
     margin: 1rem 2rem;
 }
 
-#usage {
-    margin-top: 2rem;
+
+.usage {
+    font-size: 2.5rem;
+}
+
+#instructions p {
+    margin: 1.5rem 0;
 }
 
 #cmds {
     display: flex;
     flex-wrap: wrap;
-    margin: 1.25rem;
+    margin: 0 1.25rem;
 }
 
 #cmds p {
     flex: 0 50%;
+    margin: 0;
 }
 
 #new-todo {
-    position: relative;
+    display: flex;
+    align-items: flex-end;
     width: 60rem;
+    margin: 2rem 0;
 }
 
 #new-todo span {
     user-select: none;
-    position: absolute;
     font-size: 2.5rem;
-    margin: 1.25rem;
 }
 
-#todo-txt {
+#todo-input {
+    margin: 0 1rem;
+    text-indent: 1rem;
+    z-index: 1;
     background: transparent;
     font-size: 2rem;
     border: none;
     outline: none;
     width: 100%;
-    padding: 1.5rem 4rem;
     color: #fff;
     text-shadow: var(--shadow);
     animation: textflicker .01s infinite alternate;
