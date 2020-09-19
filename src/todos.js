@@ -11,12 +11,12 @@ export {
     edit task_name fills input with task string, letting user to edit it.
     as new projects are created/deleted, add/remove them to sidebar*/
 
-const todoFactory = (title, desc, dueDate, priority) => {
+const todoFactory = (title, priority, dueDate, desc) => {
     return {
         title,
-        desc,
+        priority,
         dueDate,
-        priority
+        desc
     };
 }
 
@@ -41,7 +41,7 @@ function formatUserInput(input, index) {
         return check;
     } else {
         // sort args
-        if (formattedInput.length === 3) formattedInput = sortArgs(formattedInput);
+        formattedInput = sortArgs(formattedInput);
         // add title to array start
         formattedInput.unshift(title);
         return formattedInput;
@@ -109,3 +109,6 @@ function sortArgs(args) {
 
     return sorted;
 }
+
+
+// create function that cleans up undefined properties from object
