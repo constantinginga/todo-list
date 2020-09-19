@@ -2,8 +2,15 @@ export {
     projectFactory
 }
 
-const projectFactory = (title) => {
+
+const projectFactory = (name) => {
+
+    const content = [];
+    const add = (todo) => content.push(todo);
+
     return {
-        title
+        name,
+        content,
+        add
     };
 }
