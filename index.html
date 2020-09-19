@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
     <script src="main.js" defer></script>
-    <title>eat that frog</title>
+    <title>eat the frog</title>
 </head>
 
 <body>
     <div id="content">
         <div id="sidebar">
-            <h1 id="title">eat that frog</h1>
+            <h1 id="title">eat the frog</h1>
             <div id="sections">
                 <div class="section">inbox</div>
                 <div class="section">today</div>
@@ -21,11 +21,12 @@
             <div id="projects"></div>
         </div>
         <div id="main">
+            <div id="instructions">
+                <p>type doc for usage instructions</p>
+            </div>
             <div id="new-todo">
                 <span>$</span>
-                <input type="text" name="todo" id="todo-txt"
-                    placeholder="type ./new_task and press enter to get started">
-                <!-- <span id="add-todo">add</span> -->
+                <input type="text" name="todo" id="todo-input" spellcheck="false" autofocus>
             </div>
         </div>
     </div>
