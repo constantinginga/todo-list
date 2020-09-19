@@ -1,7 +1,8 @@
 import moment from 'moment';
 export {
     todoFactory,
-    formatUserInput
+    formatUserInput,
+    removeProp
 };
 
 
@@ -23,7 +24,9 @@ const todoFactory = (title, priority, dueDate, desc) => {
 
 function formatUserInput(input, index) {
 
-    if (input[0] === '-' && input[1] === '-' || !input) return 'error, title is missing';
+    // check for missing title case or no args case
+    if (input[0] === '-' && input[1] === '-' || !input) return 'error, title is missing'
+    else if (index == -1) return [input];
 
     // isolate args
     let argsString = input.slice(index);
@@ -110,5 +113,11 @@ function sortArgs(args) {
     return sorted;
 }
 
-
-// create function that cleans up undefined properties from object
+// removes undefined properties from object
+function removeProp(objList) {
+    for (let obj of objList) {
+        for (let prop in obj) {
+            if (obj[prop] == undefined) delete obj[prop];
+        }
+    }
+}

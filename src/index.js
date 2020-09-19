@@ -1,6 +1,7 @@
 import {
     todoFactory,
-    formatUserInput
+    formatUserInput,
+    removeProp
 } from './todos';
 import {
     generateInstructions,
@@ -35,14 +36,11 @@ function newTodo(e) {
         } else {
             input = formatUserInput(input, indexOfArgs);
 
-            if (input.includes('error')) {
-                generateError(input, parent);
-            } else if (indexOfArgs === -1 && input) {
-                projects[0].push(input);
-            } else {
-                inbox.push(todoFactory(input[0], input[1], input[2], input[3]));
-            }
-            console.log(inbox);
+            if (input.includes('error')) generateError(input, parent)
+            else projects[0].add(todoFactory(...input));
+
+            removeProp(projects[0].content);
+            console.log(projects[0].content);
         }
     } else if (e.ctrlKey && e.key === 'l') {
         // disable browser shortcut
