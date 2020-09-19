@@ -12,6 +12,10 @@ export {
     edit task_name fills input with task string, letting user to edit it.
     as new projects are created/deleted, add/remove them to sidebar*/
 
+
+const descRegex = /[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/g;
+const priorityRegex = /^[#]{1,3}$/g;
+
 const todoFactory = (title, priority, dueDate, desc) => {
     return {
         title,
@@ -55,13 +59,11 @@ function formatUserInput(input, index) {
 
 function checkArgs(args) {
 
-    // letters, numbers and spaces
-    const regex = /[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/g,
-        count = {
-            priority: 0,
-            date: 0,
-            description: 0
-        };
+    const count = {
+        priority: 0,
+        date: 0,
+        description: 0
+    };
 
     for (let i = 0; i < args.length; i++) {
         args[i] = args[i].trim();
@@ -70,8 +72,9 @@ function checkArgs(args) {
 
         // check for correct argument format
         if (args.length && args[i]) {
-            if ((args[i].includes('#') && args[i].length > 3) && !moment(args[i], 'DD.MM.YYYY', true).isValid() &&
-                !args[i].match(regex)) return 'error, wrong argument format';
+            if (!args[i].match(priorityRegex) &&
+                !moment(args[i], 'DD.MM.YYYY', true).isValid() &&
+                !args[i].match(descRegex)) return 'error, wrong argument format';
         }
     }
 
@@ -81,9 +84,9 @@ function checkArgs(args) {
 
         // check for duplicates
         for (let item of args) {
-            if (item.includes('#') && !item.match(regex)) {
+            if (item.match(priorityRegex) && !item.match(descRegex)) {
                 count.priority++;
-            } else if (item.match(regex) && !moment(item, 'DD.MM.YYYY', true).isValid()) {
+            } else if (item.match(descRegex) && !moment(item, 'DD.MM.YYYY', true).isValid()) {
                 count.description++;
             } else if (moment(item, 'DD.MM.YYYY', true).isValid()) {
                 count.date++;
@@ -105,7 +108,7 @@ function sortArgs(args) {
     let sorted = [];
 
     for (let item of args) {
-        if (item.includes('#')) sorted[0] = item
+        if (item.match(priorityRegex)) sorted[0] = item
         else if (moment(item, 'DD.MM.YYYY', true).isValid()) sorted[1] = item
         else sorted[2] = item;
     }
