@@ -1,5 +1,4 @@
 import {
-    todoFactory,
     formatUserInput,
     removeProp
 } from './todos';
@@ -9,24 +8,23 @@ import {
     clearScreen
 } from './displayController';
 import {
-    projectFactory
+    projectFactory,
+    addProject
 } from './projects';
 import './style.css';
 
 
 const inputBox = document.querySelector("#todo-input");
 const parent = document.querySelector('#instructions');
-
-inputBox.addEventListener('keydown', newTodo);
-
-
+inputBox.addEventListener('keydown', newInput);
 const projects = [projectFactory('inbox')];
 
-function newTodo(e) {
+
+
+function newInput(e) {
     if (e.key.toLowerCase() === 'enter') {
 
         let input = inputBox.value.trim();
-        const indexOfArgs = input.indexOf('--');
         inputBox.value = '';
 
         if (input === 'doc') {
@@ -34,13 +32,19 @@ function newTodo(e) {
         } else if ( /*check for project folder */ false) {
 
         } else {
-            input = formatUserInput(input, indexOfArgs);
+            input = formatUserInput(input);
 
-            if (input.includes('error')) generateError(input, parent)
-            else projects[0].add(todoFactory(...input));
+            if (input.includes('error')) {
+                generateError(input, parent);
+            } else {
+                // separate project name from input
+                let projectName = input[1];
+                input.splice(1, 1);
+                addProject(projects, projectName, input);
+            }
 
-            removeProp(projects[0].content);
-            console.log(projects[0].content);
+            projects.forEach(project => removeProp(project.content));
+            console.log(projects);
         }
     } else if (e.ctrlKey && e.key === 'l') {
         // disable browser shortcut

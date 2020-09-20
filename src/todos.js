@@ -8,7 +8,6 @@ export {
 
 /* to-do:
     type inbox/, today/, etc. and use typewriter effect to show task in that project
-    think of a way to add task to a project
     edit task_name fills input with task string, letting user to edit it.
     as new projects are created/deleted, add/remove them to sidebar*/
 
@@ -26,7 +25,9 @@ const todoFactory = (title, priority, dueDate, desc) => {
 }
 
 
-function formatUserInput(input, index) {
+function formatUserInput(input) {
+
+    const index = input.indexOf('--');
 
     // check for missing title case or no args case
     if (input[0] === '-' && input[1] === '-' || !input) return 'error, title is missing'
@@ -38,7 +39,6 @@ function formatUserInput(input, index) {
     const title = input.slice(0, index).trim();
     // clean up args and split into array
     let formattedInput = argsString.split('--');
-    console.log(formattedInput);
     // remove title
     formattedInput.shift();
 
@@ -62,7 +62,8 @@ function checkArgs(args) {
     const count = {
         priority: 0,
         date: 0,
-        description: 0
+        description: 0,
+        project: 0
     };
 
     for (let i = 0; i < args.length; i++) {
@@ -74,13 +75,13 @@ function checkArgs(args) {
         if (args.length && args[i]) {
             if (!args[i].match(priorityRegex) &&
                 !moment(args[i], 'DD.MM.YYYY', true).isValid() &&
-                !args[i].match(descRegex)) return 'error, wrong argument format';
+                !args[i].match(descRegex) && !args[i].charAt(args[i].length - 1)) return 'error, wrong argument format';
         }
     }
 
-    if (args.length > 3) return 'error, number of arguments exceeded';
+    if (args.length > 4) return 'error, number of arguments exceeded';
 
-    if (args.length === 3) {
+    if (args.length === 4) {
 
         // check for duplicates
         for (let item of args) {
@@ -90,6 +91,8 @@ function checkArgs(args) {
                 count.description++;
             } else if (moment(item, 'DD.MM.YYYY', true).isValid()) {
                 count.date++;
+            } else if (item.charAt(item.length - 1) == '/') {
+                count.project++;
             }
         }
 
@@ -108,9 +111,10 @@ function sortArgs(args) {
     let sorted = [];
 
     for (let item of args) {
-        if (item.match(priorityRegex)) sorted[0] = item
-        else if (moment(item, 'DD.MM.YYYY', true).isValid()) sorted[1] = item
-        else sorted[2] = item;
+        if (item.charAt(item.length - 1) == '/') sorted[0] = item.slice(0, -1);
+        else if (item.match(priorityRegex)) sorted[1] = item
+        else if (moment(item, 'DD.MM.YYYY', true).isValid()) sorted[2] = item
+        else sorted[3] = item;
     }
 
     return sorted;
