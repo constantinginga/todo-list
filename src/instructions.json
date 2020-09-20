@@ -16,7 +16,7 @@
             "class": "usage"
         },
         {
-            "text": "title --priority --date --description",
+            "text": "title --project-name/ --priority --date --description",
             "class": ""
         },
         [{
@@ -57,7 +57,7 @@
             "class": ""
         },
         {
-            "text": "(if not found, it will create a new project)",
+            "text": "(if not found, a new one will be created)",
             "class": ""
         }
     ]
