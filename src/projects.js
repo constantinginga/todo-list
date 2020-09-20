@@ -7,16 +7,21 @@ import {
 } from './todos';
 
 
+
+const proto = {
+    add(todo) {
+        this.content.push(todo)
+    }
+}
+
+
 const projectFactory = (name) => {
 
-    const content = [];
-    const add = (todo) => content.push(todo);
+    const obj = Object.create(proto);
+    obj.name = name;
+    obj.content = [];
 
-    return {
-        name,
-        content,
-        add
-    };
+    return obj;
 }
 
 
