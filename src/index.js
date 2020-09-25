@@ -9,7 +9,8 @@ import {
 } from './displayController';
 import {
     projectFactory,
-    addProject
+    addProject,
+    checkProjectName
 } from './projects';
 import './style.css';
 
@@ -26,26 +27,30 @@ function newInput(e) {
 
         let input = inputBox.value.trim();
         inputBox.value = '';
+        let existingProject = checkProjectName(projects, input);
 
         if (input === 'doc') {
             generateInstructions(parent);
-        } else if ( /*check for project folder */ false) {
-
+        } else if (existingProject) {
+            console.log('Project exists!');
         } else {
             input = formatUserInput(input);
 
-            if (input.includes('error')) {
+            if (typeof input == 'string') {
                 generateError(input, parent);
             } else {
                 // separate project name from input
                 let projectName = input[1];
+                console.log(input);
+                console.log(projects);
                 input.splice(1, 1);
                 addProject(projects, projectName, input);
             }
 
             projects.forEach(project => removeProp(project.content));
-            console.log(projects);
         }
+
+        console.log(projects);
     } else if (e.ctrlKey && e.key === 'l') {
         // disable browser shortcut
         e.preventDefault();
