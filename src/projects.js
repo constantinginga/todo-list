@@ -4,7 +4,8 @@ export {
     checkProjectName
 }
 import {
-    todoFactory
+    todoFactory,
+    isExistingTodo
 } from './todos';
 
 
@@ -29,20 +30,20 @@ const projectFactory = (name) => {
 
 function addProject(projects, name, todo) {
 
+    todo = todoFactory(...todo);
+
     // add to inbox by default
-    projects[0].add(todoFactory(...todo));
+    if (!isExistingTodo(projects[0].content, todo)) projects[0].add(todo);
 
     if (!name || name === undefined || name === 'inbox') return;
 
-
     for (let project of projects) {
         if (project.name === name) {
-            project.add(todoFactory(...todo));
-            return;
+            if (!isExistingTodo(project.content, todo)) project.add(todo);
         }
     }
 
-    // if project is non-existent, create new one
+    // if project is non-existent, create it
     projects.push(projectFactory(name));
     projects[projects.length - 1].add(todoFactory(...todo));
 }
@@ -62,7 +63,7 @@ function checkProjectName(projects, name) {
         }
     }
 
-    // if project doesn't exist, create it
+    // if project is non-existent, create it
     if (!bool) projects.push(projectFactory(name));
     return bool;
 }

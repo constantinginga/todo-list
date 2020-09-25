@@ -41,13 +41,17 @@ function newInput(e) {
             } else {
                 // separate project name from input
                 let projectName = input[1];
-                console.log(input);
-                console.log(projects);
                 input.splice(1, 1);
                 addProject(projects, projectName, input);
             }
 
-            projects.forEach(project => removeProp(project.content));
+            // remove empty properties from todos
+            projects.forEach(project => {
+                for (let obj of project.content) {
+                    removeProp(obj);
+                }
+            });
+
         }
 
         console.log(projects);

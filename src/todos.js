@@ -1,13 +1,16 @@
 import moment from 'moment';
+import lodash from 'lodash';
 export {
     todoFactory,
     formatUserInput,
-    removeProp
+    removeProp,
+    isExistingTodo
 };
 
 
 /* to-do:
-    type inbox/, today/, etc. and use typewriter effect to show task in that project
+    make checkprojectname return the project object
+    inside index, print out the project's contents with typewriter effect
     edit task_name fills input with task string, letting user to edit it.
     implement remove feature
     make website responsive (remove sidebar)
@@ -122,11 +125,21 @@ function sortArgs(args) {
     return sorted;
 }
 
-// removes undefined properties from object
-function removeProp(objList) {
-    for (let obj of objList) {
-        for (let prop in obj) {
-            if (obj[prop] == undefined) delete obj[prop];
-        }
+// removes empty properties from object
+function removeProp(obj) {
+    for (let prop in obj) {
+        if (obj[prop] == undefined) delete obj[prop];
     }
+}
+
+
+// check for duplicate to-do
+function isExistingTodo(content, todo) {
+
+    removeProp(todo);
+    for (let item of content) {
+        if (_.isEqual(todo, item)) return true;
+    }
+
+    return false;
 }
