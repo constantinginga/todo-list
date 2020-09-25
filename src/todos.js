@@ -9,6 +9,8 @@ export {
 /* to-do:
     type inbox/, today/, etc. and use typewriter effect to show task in that project
     edit task_name fills input with task string, letting user to edit it.
+    implement remove feature
+    make website responsive (remove sidebar)
     as new projects are created/deleted, add/remove them to sidebar*/
 
 
@@ -28,10 +30,10 @@ const todoFactory = (title, priority, dueDate, desc) => {
 function formatUserInput(input) {
 
     const index = input.indexOf('--');
-
     // check for missing title case or no args case
     if (input[0] === '-' && input[1] === '-' || !input) return 'error, title is missing'
-    else if (index == -1) return [input];
+    else if (index == -1 && input.indexOf('/') == -1) return [input]
+    else if (index == -1 && input.charAt(input.length - 1) == '/') return `created new project "${input.slice(0, -1)}"`;
 
     // isolate args
     let argsString = input.slice(index);
@@ -111,7 +113,7 @@ function sortArgs(args) {
     let sorted = [];
 
     for (let item of args) {
-        if (item.charAt(item.length - 1) == '/') sorted[0] = item.slice(0, -1);
+        if (item.charAt(item.length - 1) == '/' && item.indexOf('-') == -1) sorted[0] = item.slice(0, -1);
         else if (item.match(priorityRegex)) sorted[1] = item
         else if (moment(item, 'DD.MM.YYYY', true).isValid()) sorted[2] = item
         else sorted[3] = item;
