@@ -40,30 +40,31 @@ function addProject(projects, name, todo) {
     for (let project of projects) {
         if (project.name === name) {
             if (!isExistingTodo(project.content, todo)) project.add(todo);
+            return;
         }
     }
 
     // if project is non-existent, create it
     projects.push(projectFactory(name));
-    projects[projects.length - 1].add(todoFactory(...todo));
+    projects[projects.length - 1].add(todo);
 }
 
 
 function checkProjectName(projects, name) {
 
     // check if name is a project format
-    let bool = false;
-    if (name.charAt(name.length - 1) != '/' || name.indexOf('--') != -1) return bool;
+    let project = null;
+    if (name.charAt(name.length - 1) != '/' || name.indexOf('--') != -1) return project;
     name = name.slice(0, -1);
 
-    for (let project of projects) {
-        if (project.name === name) {
-            bool = true;
+    for (let item of projects) {
+        if (item.name === name) {
+            project = item.content;
             break;
         }
     }
 
     // if project is non-existent, create it
-    if (!bool) projects.push(projectFactory(name));
-    return bool;
+    if (project == null) projects.push(projectFactory(name));
+    return project;
 }

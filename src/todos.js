@@ -1,5 +1,5 @@
 import moment from 'moment';
-import lodash from 'lodash';
+import _ from 'lodash';
 export {
     todoFactory,
     formatUserInput,
@@ -137,6 +137,8 @@ function removeProp(obj) {
 function isExistingTodo(content, todo) {
 
     removeProp(todo);
+    if (!content.length) return false;
+
     for (let item of content) {
         if (_.isEqual(todo, item)) return true;
     }

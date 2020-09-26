@@ -5,6 +5,7 @@ import {
 import {
     generateInstructions,
     generateError,
+    generateTodos,
     clearScreen
 } from './displayController';
 import {
@@ -31,8 +32,8 @@ function newInput(e) {
 
         if (input === 'doc') {
             generateInstructions(parent);
-        } else if (existingProject) {
-            console.log('Project exists!');
+        } else if (existingProject != null) {
+            generateTodos(existingProject, parent);
         } else {
             input = formatUserInput(input);
 
