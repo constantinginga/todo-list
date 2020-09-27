@@ -7,9 +7,12 @@ import {
     todoFactory,
     isExistingTodo
 } from './todos';
+import {
+    addProjectToSidebar
+} from './displayController';
 
-
-const MAX_PROJECTS = 'error, number of projects exceeded (max 5)';
+const MAX_PROJECTS = 6;
+const MAX_PROJECTS_ERROR = 'error, number of projects exceeded (max 5)';
 
 const proto = {
     add(todo) {
@@ -46,10 +49,11 @@ function addToProject(projects, name, todo) {
     }
 
     // if project is non-existent, create it
-    if (projects.length < 6) {
+    if (projects.length < MAX_PROJECTS) {
         projects.push(projectFactory(name));
         projects[projects.length - 1].add(todo);
-    } else return MAX_PROJECTS;
+        addProjectToSidebar(name);
+    } else return MAX_PROJECTS_ERROR;
 }
 
 
@@ -69,7 +73,10 @@ function checkProjectName(projects, name) {
 
     // if project is non-existent, create it
     if (project == null) {
-        (projects.length < 6) ? projects.push(projectFactory(name)): project = MAX_PROJECTS;
+        if (projects.length < MAX_PROJECTS) {
+            projects.push(projectFactory(name));
+            addProjectToSidebar(name);
+        } else project = MAX_PROJECTS_ERROR;
     }
     return project;
 }

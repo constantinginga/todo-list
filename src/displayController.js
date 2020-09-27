@@ -3,6 +3,7 @@ export {
     generateInstructions,
     generateTodos,
     generateError,
+    addProjectToSidebar,
     clearScreen
 };
 
@@ -52,6 +53,16 @@ function generateTodos(content, parent) {
     }
 
     typeParas(parent);
+}
+
+
+// add project names to sidebar
+function addProjectToSidebar(name) {
+    const sidebar = document.querySelector('#sections');
+    const div = document.createElement('div');
+    div.innerHTML = name;
+    div.classList.add('section');
+    sidebar.appendChild(div);
 }
 
 
