@@ -1,13 +1,14 @@
 import Typed from 'typed.js';
 export {
     generateInstructions,
+    generateTodos,
     generateError,
     clearScreen
 };
 
 
 function generateInstructions(parent) {
-    parent.innerHTML = '';
+    clearScreen(parent);
     const paras = require('./instructions.json').instructions;
 
     for (let i = 0; i < paras.length; i++) {
@@ -25,6 +26,29 @@ function generateInstructions(parent) {
         } else {
             createParas(paras[i]['text'], paras[i]['class'], parent);
         }
+    }
+
+    typeParas(parent);
+}
+
+
+
+function generateTodos(content, parent) {
+    clearScreen(parent);
+    let todoString = '';
+
+    if (!content.length) generateError('project is empty...', parent);
+
+    for (let obj of content) {
+        let todoString = '';
+
+        // convert todo object into string
+        for (let prop in obj) {
+            todoString += obj[prop] + ' ';
+        }
+        // remove extra space at the end
+        todoString.trim();
+        createParas(todoString, '', parent);
     }
 
     typeParas(parent);
