@@ -9,8 +9,7 @@ export {
 
 
 /* to-do:
-    make checkprojectname return the project object
-    inside index, print out the project's contents with typewriter effect
+    set project limit to 5 (6 incl inbox), check for empty project
     edit task_name fills input with task string, letting user to edit it.
     implement remove feature
     make website responsive (remove sidebar)

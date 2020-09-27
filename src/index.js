@@ -10,7 +10,7 @@ import {
 } from './displayController';
 import {
     projectFactory,
-    addProject,
+    addToProject,
     checkProjectName
 } from './projects';
 import './style.css';
@@ -33,7 +33,7 @@ function newInput(e) {
         if (input === 'doc') {
             generateInstructions(parent);
         } else if (existingProject != null) {
-            generateTodos(existingProject, parent);
+            (typeof existingProject == 'string') ? generateError(existingProject, parent): generateTodos(existingProject, parent);
         } else {
             input = formatUserInput(input);
 
@@ -41,9 +41,11 @@ function newInput(e) {
                 generateError(input, parent);
             } else {
                 // separate project name from input
-                let projectName = input[1];
+                const projectName = input[1];
                 input.splice(1, 1);
-                addProject(projects, projectName, input);
+                // if max numbers of projects hasn't been reached, add todos to project
+                const newProject = addToProject(projects, projectName, input);
+                if (typeof newProject == 'string') generateError(newProject, parent);
             }
 
             // remove empty properties from todos

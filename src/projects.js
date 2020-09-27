@@ -1,6 +1,6 @@
 export {
     projectFactory,
-    addProject,
+    addToProject,
     checkProjectName
 }
 import {
@@ -9,6 +9,7 @@ import {
 } from './todos';
 
 
+const MAX_PROJECTS = 'error, number of projects exceeded (max 5)';
 
 const proto = {
     add(todo) {
@@ -28,7 +29,7 @@ const projectFactory = (name) => {
 
 
 
-function addProject(projects, name, todo) {
+function addToProject(projects, name, todo) {
 
     todo = todoFactory(...todo);
 
@@ -45,8 +46,10 @@ function addProject(projects, name, todo) {
     }
 
     // if project is non-existent, create it
-    projects.push(projectFactory(name));
-    projects[projects.length - 1].add(todo);
+    if (projects.length < 6) {
+        projects.push(projectFactory(name));
+        projects[projects.length - 1].add(todo);
+    } else return MAX_PROJECTS;
 }
 
 
@@ -65,6 +68,8 @@ function checkProjectName(projects, name) {
     }
 
     // if project is non-existent, create it
-    if (project == null) projects.push(projectFactory(name));
+    if (project == null) {
+        (projects.length < 6) ? projects.push(projectFactory(name)): project = MAX_PROJECTS;
+    }
     return project;
 }
