@@ -19,7 +19,7 @@ import './style.css';
 const inputBox = document.querySelector("#todo-input");
 const parent = document.querySelector('#instructions');
 inputBox.addEventListener('keydown', newInput);
-const projects = [projectFactory('inbox')];
+const projects = [projectFactory('inbox'), projectFactory('today'), projectFactory('upcoming')];
 
 
 
