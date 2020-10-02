@@ -49,7 +49,7 @@ function addToProject(projects, name, todo) {
         else if (!isExistingTodo(projects[2].content, todo) && dueDate.isAfter(today)) projects[2].add(todo);
     }
 
-    if (!name || name === undefined || name === 'inbox' || name === 'today' || name === 'upcoming') return;
+    if (!name || name === undefined || name === 'inbox' || name === 'today' || name === 'upcoming' || name.slice(0, 3) === 'rm ') return;
 
     for (let project of projects) {
         if (project.name === name) {
@@ -82,7 +82,7 @@ function checkProjectName(projects, name) {
     }
 
     // if project is non-existent, create it
-    if (project == null) {
+    if (project == null && name.slice(0, 3) !== 'rm ') {
         if (projects.length < MAX_PROJECTS) {
             projects.push(projectFactory(name));
             addProjectToSidebar(name);

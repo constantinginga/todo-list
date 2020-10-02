@@ -4,16 +4,17 @@ export {
     todoFactory,
     formatUserInput,
     removeProp,
-    isExistingTodo
+    isExistingTodo,
+    removeItem
 };
 
 
 /* to-do:
-    set project limit to 5 (6 incl inbox), check for empty project
     edit task_name fills input with task string, letting user to edit it.
     implement remove feature
     make website responsive (remove sidebar)
-    as new projects are created/deleted, add/remove them to sidebar*/
+    do something about sidebar css when project names are too long
+    add comments and clean up code*/
 
 
 const descRegex = /[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/g;
@@ -143,4 +144,19 @@ function isExistingTodo(content, todo) {
     }
 
     return false;
+}
+
+function removeTodo(name) {
+
+}
+
+function removeItem(input) {
+    // get item from input
+    let item = input.trim().split(' ').pop();
+
+    if (item.charAt(item.length - 1) === '/') {
+        console.log('project');
+    } else {
+        console.log('todo');
+    }
 }

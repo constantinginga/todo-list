@@ -1,6 +1,7 @@
 import {
     formatUserInput,
-    removeProp
+    removeProp,
+    removeItem
 } from './todos';
 import {
     generateInstructions,
@@ -27,16 +28,19 @@ function newInput(e) {
     if (e.key.toLowerCase() === 'enter') {
 
         let input = inputBox.value.trim();
-        inputBox.value = '';
         let existingProject = checkProjectName(projects, input);
+        inputBox.value = '';
 
         if (input === 'doc') {
             generateInstructions(parent);
+        } else if (input.slice(0, 3) === 'rm ') {
+            removeItem(input);
+            // check if a project with that name exists
         } else if (existingProject != null) {
             (typeof existingProject == 'string') ? generateError(existingProject, parent): generateTodos(existingProject, parent);
         } else {
             input = formatUserInput(input);
-
+            // if any todo properties have a wrong format
             if (typeof input == 'string') {
                 generateError(input, parent);
             } else {
