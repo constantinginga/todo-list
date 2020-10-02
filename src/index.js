@@ -34,7 +34,7 @@ function newInput(e) {
         if (input === 'doc') {
             generateInstructions(parent);
         } else if (input.slice(0, 3) === 'rm ') {
-            removeItem(input);
+            removeItem(input, projects);
             // check if a project with that name exists
         } else if (existingProject != null) {
             (typeof existingProject == 'string') ? generateError(existingProject, parent): generateTodos(existingProject, parent);

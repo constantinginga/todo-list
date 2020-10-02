@@ -8,7 +8,7 @@ import {
     isExistingTodo
 } from './todos';
 import {
-    addProjectToSidebar
+    addToSidebar
 } from './displayController';
 import moment from 'moment';
 
@@ -62,7 +62,7 @@ function addToProject(projects, name, todo) {
     if (projects.length < MAX_PROJECTS) {
         projects.push(projectFactory(name));
         projects[projects.length - 1].add(todo);
-        addProjectToSidebar(name);
+        addToSidebar(name);
     } else return MAX_PROJECTS_ERROR;
 }
 
@@ -85,7 +85,7 @@ function checkProjectName(projects, name) {
     if (project == null && name.slice(0, 3) !== 'rm ') {
         if (projects.length < MAX_PROJECTS) {
             projects.push(projectFactory(name));
-            addProjectToSidebar(name);
+            addToSidebar(name);
         } else project = MAX_PROJECTS_ERROR;
     }
     return project;

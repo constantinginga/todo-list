@@ -1,5 +1,8 @@
 import moment from 'moment';
 import _ from 'lodash';
+import {
+    removeFromSidebar
+} from './displayController';
 export {
     todoFactory,
     formatUserInput,
@@ -10,8 +13,9 @@ export {
 
 
 /* to-do:
+    clear screen after hitting enter
     edit task_name fills input with task string, letting user to edit it.
-    implement remove feature
+    add localstorage feature
     make website responsive (remove sidebar)
     do something about sidebar css when project names are too long
     add comments and clean up code*/
@@ -146,17 +150,28 @@ function isExistingTodo(content, todo) {
     return false;
 }
 
-function removeTodo(name) {
 
-}
+function removeItem(input, projects) {
+    // separate keyword from item name
+    let item = input.trim().substring(input.indexOf(' ')).trim();
 
-function removeItem(input) {
-    // get item from input
-    let item = input.trim().split(' ').pop();
-
+    // check if it's a project or a todo
     if (item.charAt(item.length - 1) === '/') {
-        console.log('project');
+        item = item.slice(0, item.length - 1);
+        /* remove project if it exists
+        'i' starts at 3 to skip default projects */
+        for (let i = 3; i < projects.length; i++) {
+            if (projects[i].name === item) {
+                projects.splice(i, 1);
+                removeFromSidebar(item);
+            }
+        }
     } else {
-        console.log('todo');
+        for (let project of projects) {
+            // remove todo if it exists in any project
+            for (let i = 0; i < project.content.length; i++) {
+                if (project.content[i].title === item) project.content.splice(i, 1);
+            }
+        }
     }
 }

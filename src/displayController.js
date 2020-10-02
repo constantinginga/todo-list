@@ -3,7 +3,8 @@ export {
     generateInstructions,
     generateTodos,
     generateError,
-    addProjectToSidebar,
+    addToSidebar,
+    removeFromSidebar,
     clearScreen
 };
 
@@ -56,13 +57,21 @@ function generateTodos(content, parent) {
 }
 
 
-// add project names to sidebar
-function addProjectToSidebar(name) {
+// add project name to sidebar
+function addToSidebar(name) {
     const sidebar = document.querySelector('#sections');
     const div = document.createElement('div');
     div.innerHTML = name;
     div.classList.add('section');
     sidebar.appendChild(div);
+}
+
+// remove project name from sidebar
+function removeFromSidebar(name) {
+    const sidebar = document.querySelector('#sections');
+    [...sidebar.childNodes].forEach(elem => {
+        if (elem.innerHTML === name) sidebar.removeChild(elem);
+    });
 }
 
 
