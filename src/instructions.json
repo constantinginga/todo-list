@@ -8,6 +8,10 @@
             "class": ""
         },
         {
+            "text": "Arrow keys to scroll through input history",
+            "class": ""
+        },
+        {
             "text": "words prefixed with -- are optional",
             "class": ""
         },
@@ -46,6 +50,14 @@
         },
         {
             "text": "rm project-name/",
+            "class": ""
+        },
+        {
+            "text": "to view all projects",
+            "class": "usage"
+        },
+        {
+            "text": "ls",
             "class": ""
         },
         {

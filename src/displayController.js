@@ -2,11 +2,15 @@ import Typed from 'typed.js';
 export {
     generateInstructions,
     generateTodos,
-    generateError,
+    generateProjects,
+    generateMessage,
     addToSidebar,
     removeFromSidebar,
     clearScreen
 };
+
+
+const MAX_NAME_LENGTH = 16;
 
 
 function generateInstructions(parent) {
@@ -39,7 +43,7 @@ function generateTodos(content, parent) {
     clearScreen(parent);
     let todoString = '';
 
-    if (!content.length) generateError('project is empty...', parent);
+    if (!content.length) generateMessage('project is empty...', parent);
 
     for (let obj of content) {
         let todoString = '';
@@ -57,14 +61,41 @@ function generateTodos(content, parent) {
 }
 
 
+
+function generateProjects(projects, parent) {
+    let str = '';
+    for (let project of projects) {
+        str += project.name + "/" + '  ';
+    }
+
+    // remove spaces from string end
+    generateMessage(str.slice(0, -2), parent);
+    typeParas(parent);
+}
+
+
+
+function truncateProjectName(name) {
+    if (name.length > MAX_NAME_LENGTH) {
+        name = name.slice(0, MAX_NAME_LENGTH);
+        name += '...';
+    }
+
+    return name;
+}
+
+
+
 // add project name to sidebar
 function addToSidebar(name) {
     const sidebar = document.querySelector('#sections');
     const div = document.createElement('div');
-    div.innerHTML = name;
+    div.innerHTML = truncateProjectName(name);
     div.classList.add('section');
     sidebar.appendChild(div);
 }
+
+
 
 // remove project name from sidebar
 function removeFromSidebar(name) {
@@ -75,6 +106,7 @@ function removeFromSidebar(name) {
 }
 
 
+
 function createParas(text, cls, parent) {
     const p = document.createElement('p');
     p.innerHTML = text;
@@ -82,6 +114,7 @@ function createParas(text, cls, parent) {
     p.style.display = 'none';
     parent.appendChild(p);
 }
+
 
 
 function typeParas(parent) {
@@ -100,6 +133,7 @@ function typeParas(parent) {
 }
 
 
+
 function createTypingEffect(elem) {
     elem.style.display = 'block';
     const text = elem.innerHTML;
@@ -115,11 +149,13 @@ function createTypingEffect(elem) {
 }
 
 
-function generateError(msg, parent) {
-    const err = document.createElement('p');
-    err.innerHTML = msg;
-    parent.appendChild(err);
+
+function generateMessage(text, parent) {
+    const msg = document.createElement('p');
+    msg.innerHTML = text;
+    parent.appendChild(msg);
 }
+
 
 
 function clearScreen(parent) {

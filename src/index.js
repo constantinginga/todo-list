@@ -5,7 +5,8 @@ import {
 } from './todos';
 import {
     generateInstructions,
-    generateError,
+    generateMessage,
+    generateProjects,
     generateTodos,
     clearScreen,
     addToSidebar
@@ -40,23 +41,25 @@ function newInput(e) {
 
         if (input === 'doc') {
             generateInstructions(parent);
+        } else if (input === 'ls') {
+            generateProjects(projects, parent);
         } else if (input.slice(0, 3) === 'rm ') {
             removeItem(input, projects);
         } else if (existingProject != null) {
             // check if a project with that name already exists
-            (typeof existingProject == 'string') ? generateError(existingProject, parent): generateTodos(existingProject, parent);
+            (typeof existingProject == 'string') ? generateMessage(existingProject, parent): generateTodos(existingProject, parent);
         } else {
             input = formatUserInput(input);
             // if any todo properties have a wrong format
             if (typeof input == 'string') {
-                generateError(input, parent);
+                generateMessage(input, parent);
             } else {
                 // separate project name from input
                 const projectName = input[1];
                 input.splice(1, 1);
                 // if max numbers of projects hasn't been reached, add todos to project
                 const newProject = addToProject(projects, projectName, input);
-                if (typeof newProject == 'string') generateError(newProject, parent);
+                if (typeof newProject == 'string') generateMessage(newProject, parent);
             }
 
             // remove empty properties from todos
@@ -89,10 +92,12 @@ function newInput(e) {
 }
 
 
+
 // save projects array to localStorage
 function populateStorage() {
     localStorage.setItem('projects', JSON.stringify(projects));
 }
+
 
 
 // parse string into array of objects
