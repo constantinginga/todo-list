@@ -7,7 +7,8 @@ import {
     generateInstructions,
     generateError,
     generateTodos,
-    clearScreen
+    clearScreen,
+    addToSidebar
 } from './displayController';
 import {
     projectFactory,
@@ -20,8 +21,8 @@ import './style.css';
 const inputBox = document.querySelector('#todo-input');
 const parent = document.querySelector('#instructions');
 inputBox.addEventListener('keydown', newInput);
-const projects = [projectFactory('inbox'), projectFactory('today'), projectFactory('upcoming')];
-let previousInputs = [],
+let projects = [projectFactory('inbox'), projectFactory('today'), projectFactory('upcoming')],
+    previousInputs = [],
     keyPressed = 0;
 
 
@@ -68,6 +69,7 @@ function newInput(e) {
         }
 
         console.log(projects);
+        populateStorage();
     } else if (e.ctrlKey && e.key === 'l') {
         // disable default browser behavior
         e.preventDefault();
@@ -85,3 +87,20 @@ function newInput(e) {
         else inputBox.value = previousInputs[keyPressed - 1];
     }
 }
+
+
+// save projects array to localStorage
+function populateStorage() {
+    localStorage.setItem('projects', JSON.stringify(projects));
+}
+
+
+// parse string into array of objects
+function retrieveStorage() {
+    projects = JSON.parse(localStorage.getItem('projects'));
+    projects.forEach(project => Object.setPrototypeOf(project, Object.getPrototypeOf(projectFactory(''))));
+}
+
+
+// populate projects array from localStorage and add projects to sidebar
+(!localStorage.getItem('projects')) ? populateStorage(): (retrieveStorage(), projects.forEach(project => addToSidebar(project.name)));
