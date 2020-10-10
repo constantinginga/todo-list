@@ -1,7 +1,8 @@
 export {
     projectFactory,
     addToProject,
-    checkProjectName
+    checkProjectName,
+    fillProjectName
 }
 import {
     todoFactory,
@@ -15,11 +16,13 @@ import moment from 'moment';
 const MAX_PROJECTS = 8;
 const MAX_PROJECTS_ERROR = 'error, number of projects exceeded (max 5)';
 
+
 const proto = {
     add(todo) {
         this.content.push(todo)
     }
 }
+
 
 
 const projectFactory = (name) => {
@@ -67,6 +70,7 @@ function addToProject(projects, name, todo) {
 }
 
 
+
 function checkProjectName(projects, name) {
 
     // check if name is a project format
@@ -89,4 +93,20 @@ function checkProjectName(projects, name) {
         } else project = MAX_PROJECTS_ERROR;
     }
     return project;
+}
+
+
+
+// TAB completion
+function fillProjectName(projects, sequence) {
+    let projectName = [];
+    if (sequence.slice(0, 3) === 'rm ' && sequence.length > 3) sequence = sequence.slice(3);
+
+    for (let project of projects) {
+        if (project.name.slice(0, sequence.length) === sequence) projectName.push({
+            name: project.name
+        });
+    }
+
+    return projectName;
 }

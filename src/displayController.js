@@ -6,6 +6,7 @@ export {
     generateMessage,
     addToSidebar,
     removeFromSidebar,
+    typeParas,
     clearScreen
 };
 
@@ -70,17 +71,12 @@ function generateProjects(projects, parent) {
 
     // remove spaces from string end
     generateMessage(str.slice(0, -2), parent);
-    typeParas(parent);
 }
 
 
 
 function truncateProjectName(name) {
-    if (name.length > MAX_NAME_LENGTH) {
-        name = name.slice(0, MAX_NAME_LENGTH);
-        name += '...';
-    }
-
+    if (name.length > MAX_NAME_LENGTH) name = name.slice(0, MAX_NAME_LENGTH) + '...';
     return name;
 }
 

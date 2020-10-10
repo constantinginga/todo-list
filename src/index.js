@@ -9,12 +9,14 @@ import {
     generateProjects,
     generateTodos,
     clearScreen,
-    addToSidebar
+    addToSidebar,
+    typeParas
 } from './displayController';
 import {
     projectFactory,
     addToProject,
-    checkProjectName
+    checkProjectName,
+    fillProjectName
 } from './projects';
 import './style.css';
 
@@ -43,6 +45,7 @@ function newInput(e) {
             generateInstructions(parent);
         } else if (input === 'ls') {
             generateProjects(projects, parent);
+            typeParas(parent);
         } else if (input.slice(0, 3) === 'rm ') {
             removeItem(input, projects);
         } else if (existingProject != null) {
@@ -88,6 +91,17 @@ function newInput(e) {
         // show corresponding element
         if (e.key === 'ArrowDown' && keyPressed === 0) inputBox.value = '';
         else inputBox.value = previousInputs[keyPressed - 1];
+    } else if (e.key === 'Tab') {
+        e.preventDefault();
+        if (inputBox.value.length) {
+            let projectName = fillProjectName(projects, inputBox.value);
+            if (projectName.length === 1) {
+                let rm = '';
+                if (inputBox.value.slice(0, 3) === 'rm ') rm += inputBox.value.slice(0, 3);
+                inputBox.value = rm + projectName[0].name + '/';
+            } else if (projectName.length > 1) generateProjects(projectName, parent);
+        }
+        console.log(projects);
     }
 }
 
