@@ -14,7 +14,9 @@ export {
 const MAX_NAME_LENGTH = 16;
 
 
+
 function generateInstructions(parent) {
+
     clearScreen(parent);
     const paras = require('./instructions.json').instructions;
 
@@ -42,7 +44,6 @@ function generateInstructions(parent) {
 
 function generateTodos(content, parent) {
     clearScreen(parent);
-    let todoString = '';
 
     if (!content.length) generateMessage('project is empty...', parent);
 
@@ -95,6 +96,7 @@ function addToSidebar(name) {
 
 // remove project name from sidebar
 function removeFromSidebar(name) {
+    name = truncateProjectName(name);
     const sidebar = document.querySelector('#sections');
     [...sidebar.childNodes].forEach(elem => {
         if (elem.innerHTML === name) sidebar.removeChild(elem);
