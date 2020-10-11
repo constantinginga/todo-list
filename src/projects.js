@@ -13,8 +13,12 @@ import {
 } from './displayController';
 import moment from 'moment';
 
+
 const MAX_PROJECTS = 8;
 const MAX_PROJECTS_ERROR = 'error, number of projects exceeded (max 5)';
+const MAX_PROJECTS_LENGTH = 50;
+const MAX_PROJECTS_LENGTH_ERROR = 'error, project name is too long';
+
 
 
 const proto = {
@@ -63,9 +67,11 @@ function addToProject(projects, name, todo) {
 
     // if project is non-existent, create it
     if (projects.length < MAX_PROJECTS) {
-        projects.push(projectFactory(name));
-        projects[projects.length - 1].add(todo);
-        addToSidebar(name);
+        if (name.length < MAX_PROJECTS_LENGTH) {
+            projects.push(projectFactory(name));
+            projects[projects.length - 1].add(todo);
+            addToSidebar(name);
+        } else return MAX_PROJECTS_LENGTH_ERROR;
     } else return MAX_PROJECTS_ERROR;
 }
 
@@ -88,8 +94,10 @@ function checkProjectName(projects, name) {
     // if project is non-existent, create it
     if (project == null && name.slice(0, 3) !== 'rm ') {
         if (projects.length < MAX_PROJECTS) {
-            projects.push(projectFactory(name));
-            addToSidebar(name);
+            if (name.length < MAX_PROJECTS_LENGTH) {
+                projects.push(projectFactory(name));
+                addToSidebar(name);
+            } else project = MAX_PROJECTS_LENGTH_ERROR;
         } else project = MAX_PROJECTS_ERROR;
     }
     return project;
@@ -104,7 +112,7 @@ function fillProjectName(projects, sequence) {
 
     if (sequence.slice(0, 3) === 'rm ' && sequence.length > 3) {
         sequence = sequence.slice(3);
-        // skip over first 3 non-removable projects
+        // skip over default non-removable projects (inbox, today, upcoming)
         i = 3;
     }
 

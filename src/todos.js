@@ -13,16 +13,16 @@ export {
 
 
 /* to-do:
-    clear screen after hitting enter
-    edit task_name fills input with task string, letting user to edit it.
-    add localstorage feature
-    make website responsive (remove sidebar)
-    do something about sidebar css when project names are too long
+    fix project not always being removed from sidebar
+    make website responsive (remove sidebar), but fix broken css first when text is too long (keep scrolling text to the right like a real terminal)
     add comments and clean up code*/
 
 
 const descRegex = /[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/g;
 const priorityRegex = /^[#]{1,3}$/g;
+const MAX_TITLE_LENGTH = 50;
+
+
 
 const todoFactory = (title, priority, dueDate, desc) => {
     return {
@@ -34,20 +34,26 @@ const todoFactory = (title, priority, dueDate, desc) => {
 }
 
 
+
 function formatUserInput(input) {
 
     const index = input.indexOf('--');
+
     // check for missing title case or no args case
     if (input[0] === '-' && input[1] === '-' || !input) return 'error, title is missing'
-    else if (index == -1 && input.indexOf('/') == -1) return [input]
+    else if (index == -1 && input.indexOf('/') == -1) return (input.length > MAX_TITLE_LENGTH) ? 'error, title is too long' : [input];
     else if (index == -1 && input.charAt(input.length - 1) == '/') return `created new project "${input.slice(0, -1)}"`;
 
     // isolate args
     let argsString = input.slice(index);
+
     // separate title from args
     const title = input.slice(0, index).trim();
+    if (title.length > MAX_TITLE_LENGTH) return 'error, title is too long';
+
     // clean up args and split into array
     let formattedInput = argsString.split('--');
+
     // remove title
     formattedInput.shift();
 
@@ -84,8 +90,12 @@ function checkArgs(args) {
         if (args.length && args[i]) {
             if (!args[i].match(priorityRegex) &&
                 !moment(args[i], 'DD.MM.YYYY', true).isValid() &&
-                !args[i].match(descRegex) && !args[i].charAt(args[i].length - 1)) return 'error, wrong argument format';
+                !args[i].match(descRegex) && args[i].charAt(args[i].length - 1) !== '/') return 'error, wrong argument format';
         }
+    }
+
+    for (let arg of args) {
+        if (arg.match(descRegex) && !moment(arg, 'DD.MM.YYYY', true).isValid() && arg.length > MAX_TITLE_LENGTH) return 'error, description is too long';
     }
 
     if (args.length > 4) return 'error, number of arguments exceeded';
@@ -129,12 +139,15 @@ function sortArgs(args) {
     return sorted;
 }
 
+
+
 // removes empty properties from object
 function removeProp(obj) {
     for (let prop in obj) {
         if (obj[prop] == undefined) delete obj[prop];
     }
 }
+
 
 
 // check for duplicate to-do
@@ -149,6 +162,7 @@ function isExistingTodo(content, todo) {
 
     return false;
 }
+
 
 
 function removeItem(input, projects) {
