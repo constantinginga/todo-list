@@ -26,7 +26,9 @@ const parent = document.querySelector('#instructions');
 inputBox.addEventListener('keydown', newInput);
 let projects = [projectFactory('inbox'), projectFactory('today'), projectFactory('upcoming')],
     previousInputs = [],
-    keyPressed = 0;
+    keyPressed = 0,
+    previousTab = '';
+
 
 
 function newInput(e) {
@@ -71,10 +73,7 @@ function newInput(e) {
                     removeProp(obj);
                 }
             });
-
         }
-
-        console.log(projects);
         populateStorage();
     } else if (e.ctrlKey && e.key === 'l') {
         // disable default browser behavior
@@ -93,15 +92,21 @@ function newInput(e) {
         else inputBox.value = previousInputs[keyPressed - 1];
     } else if (e.key === 'Tab') {
         e.preventDefault();
+
         if (inputBox.value.length) {
             let projectName = fillProjectName(projects, inputBox.value);
+
+            // if only one project was found, fill input with project name
             if (projectName.length === 1) {
                 let rm = '';
                 if (inputBox.value.slice(0, 3) === 'rm ') rm += inputBox.value.slice(0, 3);
                 inputBox.value = rm + projectName[0].name + '/';
-            } else if (projectName.length > 1) generateProjects(projectName, parent);
+
+                // if more than 1, show all projects found to screen
+            } else if (projectName.length > 1 && JSON.stringify(previousTab) !== JSON.stringify(projectName)) generateProjects(projectName, parent);
+            // store previous array to prevent displaying the same names to screen multiple times
+            previousTab = projectName;
         }
-        console.log(projects);
     }
 }
 
@@ -119,6 +124,7 @@ function retrieveStorage() {
     projects = JSON.parse(localStorage.getItem('projects'));
     projects.forEach(project => Object.setPrototypeOf(project, Object.getPrototypeOf(projectFactory(''))));
 }
+
 
 
 // populate projects array from localStorage and add projects to sidebar
