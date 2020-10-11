@@ -12,15 +12,14 @@ export {
 };
 
 
-/* to-do:
-    fix project not always being removed from sidebar
-    make website responsive (remove sidebar), but fix broken css first when text is too long (keep scrolling text to the right like a real terminal)
-    add comments and clean up code*/
-
-
 const descRegex = /[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/g;
 const priorityRegex = /^[#]{1,3}$/g;
 const MAX_TITLE_LENGTH = 50;
+const MAX_TITLE_LENGTH_ERROR = 'error, title is too long';
+const MAX_DESC_LENGTH_ERROR = 'error, description is too long';
+const WRONG_FORMAT_ERROR = 'error, wrong argument format';
+const MAX_ARGS = 4;
+const MAX_ARGS_ERROR = 'error, number of arguments exceeded';
 
 
 
@@ -41,7 +40,7 @@ function formatUserInput(input) {
 
     // check for missing title case or no args case
     if (input[0] === '-' && input[1] === '-' || !input) return 'error, title is missing'
-    else if (index == -1 && input.indexOf('/') == -1) return (input.length > MAX_TITLE_LENGTH) ? 'error, title is too long' : [input];
+    else if (index == -1 && input.indexOf('/') == -1) return (input.length > MAX_TITLE_LENGTH) ? MAX_TITLE_LENGTH_ERROR : [input];
     else if (index == -1 && input.charAt(input.length - 1) == '/') return `created new project "${input.slice(0, -1)}"`;
 
     // isolate args
@@ -49,7 +48,7 @@ function formatUserInput(input) {
 
     // separate title from args
     const title = input.slice(0, index).trim();
-    if (title.length > MAX_TITLE_LENGTH) return 'error, title is too long';
+    if (title.length > MAX_TITLE_LENGTH) return MAX_TITLE_LENGTH_ERROR;
 
     // clean up args and split into array
     let formattedInput = argsString.split('--');
@@ -90,17 +89,17 @@ function checkArgs(args) {
         if (args.length && args[i]) {
             if (!args[i].match(priorityRegex) &&
                 !moment(args[i], 'DD.MM.YYYY', true).isValid() &&
-                !args[i].match(descRegex) && args[i].charAt(args[i].length - 1) !== '/') return 'error, wrong argument format';
+                !args[i].match(descRegex) && args[i].charAt(args[i].length - 1) !== '/') return WRONG_FORMAT_ERROR;
         }
     }
 
     for (let arg of args) {
-        if (arg.match(descRegex) && !moment(arg, 'DD.MM.YYYY', true).isValid() && arg.length > MAX_TITLE_LENGTH) return 'error, description is too long';
+        if (arg.match(descRegex) && !moment(arg, 'DD.MM.YYYY', true).isValid() && arg.length > MAX_TITLE_LENGTH) return MAX_DESC_LENGTH_ERROR;
     }
 
-    if (args.length > 4) return 'error, number of arguments exceeded';
+    if (args.length > MAX_ARGS) return MAX_ARGS_ERROR;
 
-    if (args.length === 4) {
+    if (args.length === MAX_ARGS) {
 
         // check for duplicates
         for (let item of args) {
