@@ -134,6 +134,7 @@ function typeParas(parent) {
 
 function createTypingEffect(elem) {
     elem.style.display = 'block';
+    elem.scrollIntoView();
     const text = elem.innerHTML;
     elem.innerHTML = '';
     const typed = new Typed(elem, {
@@ -152,6 +153,7 @@ function generateMessage(text, parent) {
     const msg = document.createElement('p');
     msg.innerHTML = text;
     parent.appendChild(msg);
+    msg.scrollIntoView();
 }
 
 
