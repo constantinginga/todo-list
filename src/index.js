@@ -10,7 +10,8 @@ import {
     generateTodos,
     clearScreen,
     addToSidebar,
-    typeParas
+    typeParas,
+    removeFromSidebar
 } from './displayController';
 import {
     projectFactory,
@@ -129,3 +130,11 @@ function retrieveStorage() {
 
 // populate projects array from localStorage and add projects to sidebar
 (!localStorage.getItem('projects')) ? populateStorage(): (retrieveStorage(), projects.forEach(project => addToSidebar(project.name)));
+
+
+
+// update sidebar on page load
+(function updateSidebar() {
+    projects.forEach(project => removeFromSidebar(project.name));
+    projects.forEach(project => addToSidebar(project.name));
+})()
