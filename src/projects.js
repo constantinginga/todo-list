@@ -99,12 +99,18 @@ function checkProjectName(projects, name) {
 
 // TAB completion
 function fillProjectName(projects, sequence) {
-    let projectName = [];
-    if (sequence.slice(0, 3) === 'rm ' && sequence.length > 3) sequence = sequence.slice(3);
+    let projectName = [],
+        i = 0;
 
-    for (let project of projects) {
-        if (project.name.slice(0, sequence.length) === sequence) projectName.push({
-            name: project.name
+    if (sequence.slice(0, 3) === 'rm ' && sequence.length > 3) {
+        sequence = sequence.slice(3);
+        // skip over first 3 non-removable projects
+        i = 3;
+    }
+
+    for (i; i < projects.length; i++) {
+        if (projects[i].name.slice(0, sequence.length) === sequence) projectName.push({
+            name: projects[i].name
         });
     }
 
