@@ -10,7 +10,11 @@
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^4.2.2",
+    "eslint": "^7.12.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
     "live-server": "^1.2.1",
+    "prettier": "^2.1.2",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
